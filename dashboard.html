@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="loadDashboard()">
+
+<h2 id="welcome"></h2>
+
+<button onclick="location.href='builder.html'">
+  Create Resume
+</button>
+
+<div id="stats"></div>
+
+<script src="engine/storageEngine.js"></script>
+<script>
+function loadDashboard() {
+  const user = localStorage.getItem("user") || "Guest";
+
+  document.getElementById("welcome").innerText =
+    "Welcome " + user;
+
+  const resumes = JSON.parse(localStorage.getItem("resumes") || "[]");
+
+  document.getElementById("stats").innerHTML =
+    "Total Resumes: " + resumes.length;
+}
+</script>
+
+</body>
+</html>
