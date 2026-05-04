@@ -1,32 +1,64 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dashboard</title>
+  <title>Dashboard V3.5</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body onload="loadDashboard()">
+<body>
 
-<h2 id="welcome"></h2>
+<h2 style="padding:20px;">Career Intelligence Dashboard</h2>
 
-<button onclick="location.href='builder.html'">
-  Create Resume
-</button>
+<div class="grid">
 
-<div id="stats"></div>
+  <!-- LEFT PANEL -->
+  <div class="card">
+    <h3>Create Resume</h3>
 
-<script src="engine/storageEngine.js"></script>
+    <textarea id="input" placeholder="Enter job or skills..."></textarea>
+
+    <button onclick="generate()">Generate</button>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="card">
+    <h3>ATS Score</h3>
+    <div class="ats-circle" id="atsScore">0%</div>
+
+    <h3>Career Score</h3>
+    <div id="careerScore">--</div>
+  </div>
+
+</div>
+
+<!-- RESUME PREVIEW -->
+<div class="card resume" id="output"></div>
+
+<button onclick="downloadPDF()">Download Resume PDF</button>
+
+<script src="engine/resumeEngine.js"></script>
+<script src="engine/atsEngine.js"></script>
+<script src="engine/scoreEngine.js"></script>
+<script src="export/pdf.js"></script>
+
 <script>
-function loadDashboard() {
-  const user = localStorage.getItem("user") || "Guest";
+function generate() {
 
-  document.getElementById("welcome").innerText =
-    "Welcome " + user;
+  const input = document.getElementById("input").value;
+  const resume = buildResume(input);
 
-  const resumes = JSON.parse(localStorage.getItem("resumes") || "[]");
+  document.getElementById("output").innerHTML = `
+    <h1>${resume.role}</h1>
+    <p>${resume.summary}</p>
 
-  document.getElementById("stats").innerHTML =
-    "Total Resumes: " + resumes.length;
+    <h3>Skills</h3>
+    <ul>
+      ${resume.skills.map(s => `<li>${s}</li>`).join("")}
+    </ul>
+  `;
+
+  document.getElementById("atsScore").innerText = resume.atsScore + "%";
+  document.getElementById("careerScore").innerText = resume.careerScore;
 }
 </script>
 
