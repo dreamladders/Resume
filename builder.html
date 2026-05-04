@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Resume Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>AI Resume Builder</h2>
+
+<textarea id="input" placeholder="Type: I want resume for hotel job..."></textarea>
+
+<button onclick="generate()">Generate</button>
+
+<div id="output"></div>
+
+<button onclick="downloadPDF()">Download PDF</button>
+
+<script src="engine/jobEngine.js"></script>
+<script src="engine/atsEngine.js"></script>
+<script src="engine/scoreEngine.js"></script>
+<script src="engine/resumeEngine.js"></script>
+<script src="export/pdfExport.js"></script>
+
+<script>
+function generate() {
+  const input = document.getElementById("input").value;
+
+  const resume = buildResume(input);
+
+  document.getElementById("output").innerHTML = `
+    <h3>Role: ${resume.role}</h3>
+    <p><b>Summary:</b> ${resume.summary}</p>
+    <p><b>Skills:</b> ${resume.skills.join(", ")}</p>
+    <p><b>ATS Score:</b> ${resume.atsScore}</p>
+    <p><b>Career Score:</b> ${resume.careerScore}</p>
+  `;
+
+  saveResume(resume);
+}
+</script>
+
+</body>
+</html>
