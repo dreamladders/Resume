@@ -3,7 +3,7 @@ function downloadPDF() {
 
   html2pdf().from(element).set({
     margin: 1,
-    filename: "resume.pdf",
+    filename: "dream-ladders-resume.pdf",
     html2canvas: { scale: 2 }
   }).save();
 }
